@@ -62,6 +62,9 @@ for i = 1: ItemCount,
     end;
 end
 
+//disp(S);
+//printf('\n');
+
 //余因子行列
 m=1;
 n=1;
@@ -81,6 +84,8 @@ for i = 1: ItemCount,
                     then
                         m=1,
                         AJMt(i,j) = det(A)*((-1)^(i+j)),
+//disp(A);
+//printf('\n');
                     end;
                   end;     
                 end;
@@ -90,3 +95,64 @@ for i = 1: ItemCount,
 end
 
 AJM = AJMt';
+
+printf('AJM =');
+disp(AJM);
+printf('\n');
+
+
+for i=1:SampleCount,
+    Ut      = u( i, :),
+    U       = Ut',
+    D2(i,1) = Ut * AJM * U / ItemCount;
+end
+
+
+/* 信号空間の検証 */
+
+printf('Enter a File Name of MT Signal Material');
+MTSigFile = input('File Name(.xls)?: ',"string");
+
+printf('./' +MTSigFile+'.xls\n');
+
+MTSig_Sheets   = readxls('./' + MTSigFile + '.xls');  // EXELファイルの読み出し
+
+SigSheet        = MTSig_Sheets(1);         // Sheetの抜き出し
+MTSig           = SigSheet.value;              // 数値の取り出し
+
+SampleCount = size( MTSig, 1);
+ItemCount   = size( MTSig, 2);
+
+printf('SampleCount =');
+disp(string(SampleCount));
+printf('ItemCount =');
+disp(string(ItemCount));
+
+printf('\n');
+
+
+// 正規化
+for j = 1: ItemCount,
+    for i = 1: SampleCount,
+        v( i, j) = MTSig( i, j) - Ave( 1, j);
+    end;
+end
+
+for i=1:SampleCount,
+    Vt      = v( i, :),
+    V       = Vt',
+    SD2(i,1) = Vt * AJM * V / ItemCount;
+end
+
+//clf;    // clear
+scf;    // add
+
+subplot(2,2,1);
+plot2d(D2);
+subplot(2,2,2);
+histplot( 30, D2(:,1)');
+
+subplot(2,2,3);
+plot2d(SD2);
+subplot(2,2,4);
+histplot( 30, SD2(:,1)');

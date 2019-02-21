@@ -131,33 +131,9 @@ printf("Dave = ");
 disp(string(Dave));
 printf("\n");
 
-/*
-c1p5=0;
-c2p0=0;
-c2p5=0;
-c3p0=0;
 
-printf('Dave ='+string(Dave)+'\n');
-printf('\n');
 
-for i = 1: SampleCount,
-    printf('D'+string(i)+'='+string(D(i,1))),
-    if Dave*1.5 <= D(i,1)    then c1p5 = c1p5 + 1,    printf('*');   end,
-    if Dave*2.0 <= D(i,1)    then c2p0 = c2p0 + 1,    printf('*');   end,
-    if Dave*2.5 <= D(i,1)    then c2p5 = c2p5 + 1,    printf('*');   end,
-    if Dave*3.0 <= D(i,1)    then c3p0 = c3p0 + 1,    printf('*');   end,
-    printf('\n'),
-end
-
-printf('\n');
-
-printf('c1p5 ='+string(c1p5)+'\n');
-printf('c2p0 ='+string(c2p0)+'\n');
-printf('c2p5 ='+string(c2p5)+'\n');
-printf('c3p0 ='+string(c3p0)+'\n');
-
-printf('\n');
-*/
+/* 信号空間の検証 */
 
 printf('Enter a File Name of RT Signal Material');
 RTSigFile = input('File Name(.xls)?: ',"string");
@@ -260,6 +236,9 @@ for i = 1: SampleCount,
     Dx(i,1)     = D2(i,1)^0.5,
     RateX(i,1)  = Dx(i,1)/Dave,
 end
+
+//clf;    // clear
+scf;    // add
 
 subplot(1,2,1);
 plot2d(Dx);

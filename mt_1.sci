@@ -104,24 +104,7 @@ disp(string(AveD));
 printf("\n");
 
 
-/*
-D2Max=D2(1,1);
-D2Min=D2(1,1);
-
-for i=1:SampleCount,
-    //disp( "D2(" + string(i) + ",1) = " + string(D2(i,1)) );
-    if(D2Max<D2(i,1))
-    then
-        D2Max=D2(i,1);
-    end
-    if(D2Min>D2(i,1))
-    then
-        D2Min=D2(i,1);
-    end
-end
-printf("D2Max="+D2Max);
-printf("D2Min="+D2Min);
-*/
+/* 信号空間の検証 */
 
 printf('Enter a File Name of MT Signal Material');
 MTSigFile = input('File Name(.xls)?: ',"string");
@@ -141,32 +124,6 @@ disp(string(SampleCount));
 printf('ItemCount =');
 disp(string(ItemCount));
 
-/*
-// 予備計算
-for j = 1: ItemCount,
-    y1( 1, j) = 0, //行列の初期化
-    y2( 1, j) = 0, //行列の初期化
-    for i = 1: SampleCount,
-        y1( 1, j) = y1( 1, j) + MTSig( i, j),      // 1乗の総和を求める
-        y2( 1, j) = y2( 1, j) + MTSig( i, j)^2;    // 2乗の総和を求める
-    end,
-end
-
-// 算術平均
-for j = 1: ItemCount,
-    AveY( 1, j) = y1( 1, j) / SampleCount;
-end
-
-// 標準偏差(MT法)
-for j = 1: ItemCount,
-    StDevMY( 1, j) = (( y2( 1, j) - (y1( 1, j)^2)/SampleCount) /SampleCount)^0.5;
-end
-
-printf('AveY =');
-disp(string(AveY));
-printf('StDevMY =');
-disp(string(StDevMY));
-*/
 printf('\n');
 
 
@@ -184,12 +141,17 @@ for i=1:SampleCount,
     SD2(i,1) = Vt * inv(R) * V / ItemCount;
 end
 
+//clf;    // clear
+scf;    // add
+
 subplot(2,2,1);
 plot2d(D2);
 subplot(2,2,2);
-histplot( 0:1:30, D2(:,1)');
+//histplot( 0:1:30, D2(:,1)');
+histplot( 30, D2(:,1)');
 
 subplot(2,2,3);
 plot2d(SD2);
 subplot(2,2,4);
-histplot( 0:1:30, SD2(:,1)');
+//histplot( 0:1:30, SD2(:,1)');
+histplot( 30, SD2(:,1)');
