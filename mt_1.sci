@@ -1,5 +1,8 @@
 clear;
 
+printf('************** mt_1.sci Start! ****************');
+printf('\n');
+
 printf('Enter a File Name of UNIT SPACE Material');
 UnitSpaceFile = input('File Name(.xls)?: ',"string");
 //scanf('%s',UnitSpaceFile);

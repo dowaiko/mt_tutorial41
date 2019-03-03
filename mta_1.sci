@@ -1,6 +1,9 @@
 
 clear;
 
+printf('************** mta_1.sci Start! ****************');
+printf('\n');
+
 printf('Enter a File Name of UNIT SPACE Material');
 UnitSpaceFile = input('File Name(.xls)?: ',"string");
 //scanf('%s',UnitSpaceFile);
@@ -10,14 +13,14 @@ printf('./' +UnitSpaceFile+'.xls\n');
 
 
 //MT_Mat_Sheets   = readxls('./mt_mat.xls');  // EXELファイルの読み出し
-MT_Mat_Sheets   = readxls('./' + UnitSpaceFile + '.xls');  // EXELファイルの読み出し
+MTA_Mat_Sheets   = readxls('./' + UnitSpaceFile + '.xls');  // EXELファイルの読み出し
 
 
-Sheet           = MT_Mat_Sheets(1);         // Sheetの抜き出し
-MTMate          = Sheet.value;              // 数値の取り出し
+Sheet           = MTA_Mat_Sheets(1);         // Sheetの抜き出し
+MTAMate          = Sheet.value;              // 数値の取り出し
 
-SampleCount = size( MTMate, 1);
-ItemCount   = size( MTMate, 2);
+SampleCount = size( MTAMate, 1);
+ItemCount   = size( MTAMate, 2);
 
 // 
 printf('SampleCount =');
@@ -31,8 +34,8 @@ for j = 1: ItemCount,
     x1( 1, j) = 0, //行列の初期化
     x2( 1, j) = 0, //行列の初期化
     for i = 1: SampleCount,
-        x1( 1, j) = x1( 1, j) + MTMate( i, j),      // 1乗の総和を求める
-        x2( 1, j) = x2( 1, j) + MTMate( i, j)^2;    // 2乗の総和を求める
+        x1( 1, j) = x1( 1, j) + MTAMate( i, j),      // 1乗の総和を求める
+        x2( 1, j) = x2( 1, j) + MTAMate( i, j)^2;    // 2乗の総和を求める
     end,
 end
 
@@ -49,7 +52,7 @@ end
 // 正規化
 for j = 1: ItemCount,
     for i = 1: SampleCount,
-        u( i, j) = MTMate( i, j) - Ave( 1, j);
+        u( i, j) = MTAMate( i, j) - Ave( 1, j);
     end;
 end
 
