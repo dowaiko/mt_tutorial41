@@ -1,6 +1,8 @@
 
 clear;
 
+printf('\n');
+
 printf('************** mta_predict.sci Start! ****************');
 printf('\n');
 
@@ -165,9 +167,6 @@ histplot( 30, SD2(:,1)');
 
 // マハラノビス距離と信号空間の予測対象との相関
 
-//RegAna=zeros(SampleCountS,2);
-//RegAna=zeros(1,2);
-
 for i=1:SampleCountS,
     RegAna(i,1) = SD2(i,1)^0.5,
     RegAna(i,2) = MTASig(i,ItemCountS);
@@ -200,26 +199,12 @@ Sy  = Sy - sy^2/SampleCountS;
 Sxy = Sxy - sx*sy/SampleCountS;
 
 CorCoe  = Sxy/(Sx*Sy)^0.5;
-//R2  = CorCoe^2;
-
-//CorCoez  = Sxyz/(Sxz*Syz)^0.5;
-//R2z  = CorCoez^2;
 
 Sr  = sxyZ^2/SxZ - sy^2/SampleCountS
 R2  = Sr/Sy
 
 printf('CorCoe =');
 disp(string(CorCoe));
-//printf('R2 =');
-//disp(string(R2));
-
-//printf('Sxy/Sx =');
-//disp(string(Sxy/Sx));
-
-//printf('CorCoez =');
-//disp(string(CorCoez));
-//printf('R2z =');
-//disp(string(R2z));
 
 printf('sxyZ/SxZ =');
 disp(string(sxyZ/SxZ));
@@ -240,6 +225,8 @@ plot( RegAna(:,1),sxyZ/SxZ*RegAna(:,1), 'k-');
 for i=1:SampleCountS,
     RegAna(i,3) = sxyZ/SxZ*RegAna(i,1),
 end
+
+PredCoe=sxyZ/SxZ;
 
 Sx=0;
 Sy=0;
@@ -286,3 +273,55 @@ subplot(3,2,6);
 plot( RegAna(:,3), RegAna(:,2), '.');
 plot( RegAna(:,3),sxyZ/SxZ*RegAna(:,3), 'k-');
 
+
+
+printf('\n');
+
+/* 評価対象の検証 */
+printf('Enter a File Name of MTA Evaluation Material');
+MTAEvaFile = input('File Name(.xls)?: ',"string");
+
+printf('./' +MTAEvaFile+'.xls\n');
+
+MTAEva_Sheets   = readxls('./' + MTAEvaFile + '.xls');  // EXELファイルの読み出し
+
+EvaSheet        = MTAEva_Sheets(1);         // Sheetの抜き出し
+MTAEva          = EvaSheet.value;              // 数値の取り出し
+
+SampleCountE = size( MTAEva, 1);
+ItemCountE   = size( MTAEva, 2);
+
+printf('SampleCountE =');
+disp(string(SampleCountE));
+printf('ItemCountE =');
+disp(string(ItemCountE));
+printf('\n');
+
+//
+if ItemCount <> ItemCountE then
+    printf(' MTA Evaluation Material is not Suitable\n'),
+    break;    
+end
+
+// 正規化
+for j = 1: ItemCountE,
+    for i = 1: SampleCountE,
+        w( i, j) = MTAEva( i, j) - Ave( 1, j);
+    end;
+end
+
+for i=1:SampleCountE,
+    Wt      = w( i, :),
+    W       = Wt',
+    ED2(i,1) = Wt * AJM * W / ItemCountE;
+end
+
+//予測結果
+for i=1:SampleCountE,
+    PredAna(i,1) = ED2(i,1)^0.5,
+    PredAna(i,2) = PredCoe*PredAna(i,1),
+end
+
+printf('PredAna =');
+disp(PredAna);
+printf('\n');
