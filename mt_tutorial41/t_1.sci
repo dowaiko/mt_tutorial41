@@ -117,16 +117,16 @@ end
 
 
 
-printf('Beta =');
-disp(string(Beta));
-printf('Eta =');
-disp(string(Eta));
+//printf('Beta =');
+//disp(string(Beta));
+//printf('Eta =');
+//disp(string(Eta));
 
 printf('\n');
 
 
 /* 評価対象の検証 */
-printf('Enter a File Name of MTA Evaluation Material');
+printf('Enter a File Name of T Evaluation Material');
 TEvaFile = input('File Name(.xls)?: ',"string");
 
 printf('./' +TEvaFile+'.xls\n');
